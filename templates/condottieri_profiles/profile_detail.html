@@ -1,0 +1,58 @@
+{% extends 'condottieri_profiles/base.html' %}
+
+{% load i18n %}
+{% load avatar_tags %}
+{# stars defined in machiavelli app #}
+{% load stars %}
+
+{% block head_title %}{% trans "Profile" %}{% endblock %}
+
+{% block body %}
+<h1>{% trans "Profile for" %} {{ profile.user.username }}</h1>
+<div>
+{% avatar profile.user %}<br/>
+{% if is_own %}
+<a href="{% url avatar_change %}">{% trans "Change avatar" %}</a>
+{% endif %}
+</div>
+<dl>
+{% if profile.name %}
+<dt>{% trans "Name" %}</dt>
+<dd>{{ profile.name }}</dd>
+{% endif %}
+{% if profile.about %}
+<dt>{% trans "About" %}</dt>
+<dd>{{ profile.about }}</dd>
+{% endif %}
+{% if profile.location %}
+<dt>{% trans "Location" %}</dt>
+<dd>{{ profile.location }}</dd>
+{% endif %}
+<dt>{% trans "Known languages" %} (<a href="{% url profile_languages_edit %}">{% trans "Edit" %}</a>)</dt>
+<dd>{{ profile.spokenlanguage_set.all|join:", " }}</dd>
+{% if profile.website %}
+<dt>{% trans "Website" %}</dt>
+<dd><a href="{{ profile.website }}">{{ profile.website }}</a></dd>
+{% endif %}
+<dt>{% trans "Karma" %}</dt>
+<dd>{{ profile.karma|karma_stars }}
+	{% if is_own %}
+	({{ profile.karma }})
+	{% endif %}
+</dd>
+<dt>{% trans "Total score" %}</dt>
+<dd>{{ profile.total_score|score_stars }} ({{ profile.total_score }}
+<a href="{% url ranking "user" profile.user.username %}">{% trans "Detail" %}</a>)
+</dd>
+<dt>{% trans "Average points per game" %}</dt>
+<dd>{{ profile.average_score }}</dd>
+<dt>{% trans "Ranking score" %}</dt>
+<dd>{{ profile.weighted_score }}</dd>
+<dt>{% trans "Times overthrown" %}</dt>
+<dd>{{ profile.overthrows }}</dd>
+</dl>
+
+{% if is_own %}
+<p><a href="{% url profile_edit %}">{% trans "Edit" %}</a>.</p>
+{% endif %}
+{% endblock %}
