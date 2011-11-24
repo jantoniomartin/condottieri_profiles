@@ -127,3 +127,18 @@ class SpokenLanguage(models.Model):
 	class Meta:
 		unique_together = (('code', 'profile',),)
 
+class Friendship(models.Model):
+	"""
+	Defines a one-way friendship relationship between two users.
+	"""
+	friend_from = models.ForeignKey(User, related_name="friends")
+	friend_to = models.ForeignKey(User, related_name="friend_of")
+	created_on = models.DateTimeField(editable=False, auto_now_add=True)
+
+	class Meta:
+		unique_together = (('friend_from', 'friend_to',),)
+
+	def __unicode__(self):
+		return "%s is a friend of %s" % (self.friend_to, self.friend_from)
+	
+

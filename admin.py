@@ -11,3 +11,4 @@ class CondottieriProfileAdmin(admin.ModelAdmin):
 	inlines = [SpokenLanguageInline, ]
 
 admin.site.register(CondottieriProfile, CondottieriProfileAdmin)
+admin.site.register(Friendship)

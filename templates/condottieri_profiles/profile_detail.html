@@ -15,6 +15,8 @@
 <a href="{% url avatar_change %}">{% trans "Change avatar" %}</a>
 {% endif %}
 </div>
+
+<h2>{% trans "User data" %}</h2>
 <dl>
 {% if profile.name %}
 <dt>{% trans "Name" %}</dt>
@@ -28,7 +30,8 @@
 <dt>{% trans "Location" %}</dt>
 <dd>{{ profile.location }}</dd>
 {% endif %}
-<dt>{% trans "Known languages" %} (<a href="{% url profile_languages_edit %}">{% trans "Edit" %}</a>)</dt>
+<dt>{% trans "Known languages" %}
+{% if is_own %} (<a href="{% url profile_languages_edit %}">{% trans "Edit" %}</a>){% endif %}</dt>
 <dd>{{ profile.spokenlanguage_set.all|join:", " }}</dd>
 {% if profile.website %}
 <dt>{% trans "Website" %}</dt>
@@ -53,6 +56,26 @@
 </dl>
 
 {% if is_own %}
-<p><a href="{% url profile_edit %}">{% trans "Edit" %}</a>.</p>
+	<p><a href="{% url profile_edit %}">{% trans "Edit" %}</a>.</p>
+{% else %}
+	{% if is_friend %}
+		<p>{% blocktrans with profile.user.username as user %}{{ user }} is your friend.{% endblocktrans %}
+		(<a href="{% url change_friendship profile.user.username %}">{% trans "Unfriend" %}</a>)</p>
+	{% else %}
+		<p>{% blocktrans with profile.user.username as user %}{{ user }} is not your friend.{% endblocktrans %}
+		(<a href="{% url change_friendship profile.user.username %}">{% trans "Befriend" %}</a>)</p>
+	{% endif %}
+	{% if am_friend %}
+		<p>{% blocktrans with profile.user.username as user %}Your are a friend of {{ user }}.{% endblocktrans %}</p>
+	{% endif %}
 {% endif %}
+
+<h2>{% trans "Friends" %}</h2>
+<ul>
+{% for f in friends %}
+	<li><a href="{% url profile_detail f.friend_to.username %}">{{ f.friend_to }}</a></li>
+{% endfor %}
+</ul>
+
+
 {% endblock %}
