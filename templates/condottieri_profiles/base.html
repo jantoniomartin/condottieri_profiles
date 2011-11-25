@@ -2,7 +2,9 @@
 
 {% load i18n %}
 
-{% block extra_head %}{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{{ STATIC_URL }}condottieri_profiles/css/profile.css" />
+{% endblock %}
 
 {% block body_class %}profile{% endblock %}
 {% block rtab_id %}id="profile_tab"{% endblock %}

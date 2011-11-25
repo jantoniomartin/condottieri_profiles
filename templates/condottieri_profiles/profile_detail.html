@@ -8,15 +8,19 @@
 {% block head_title %}{% trans "Profile" %}{% endblock %}
 
 {% block body %}
-<h1>{% trans "Profile for" %} {{ profile.user.username }}</h1>
-<div>
+<div class="section">
+<h1>{% trans "Profile for" %} {{ profile.user.username }}
+{% if is_friend %}
+<img src="{{ STATIC_URL }}/condottieri_profiles/img/heart-red.png" />
+{% endif %}
+</h1>
+<div id="profile_avatar">
 {% avatar profile.user %}<br/>
 {% if is_own %}
 <a href="{% url avatar_change %}">{% trans "Change avatar" %}</a>
 {% endif %}
 </div>
 
-<h2>{% trans "User data" %}</h2>
 <dl>
 {% if profile.name %}
 <dt>{% trans "Name" %}</dt>
@@ -57,7 +61,13 @@
 
 {% if is_own %}
 	<p><a href="{% url profile_edit %}">{% trans "Edit" %}</a>.</p>
-{% else %}
+{% endif %}
+
+</div>
+
+<div class="section">
+<h2>{% trans "Friends" %}</h2>
+	{% if not is_own %}
 	{% if is_friend %}
 		<p>{% blocktrans with profile.user.username as user %}{{ user }} is your friend.{% endblocktrans %}
 		(<a href="{% url change_friendship profile.user.username %}">{% trans "Unfriend" %}</a>)</p>
@@ -68,14 +78,13 @@
 	{% if am_friend %}
 		<p>{% blocktrans with profile.user.username as user %}Your are a friend of {{ user }}.{% endblocktrans %}</p>
 	{% endif %}
-{% endif %}
-
-<h2>{% trans "Friends" %}</h2>
-<ul>
+	{% endif %}
+<ul id="friend_list">
 {% for f in friends %}
-	<li><a href="{% url profile_detail f.friend_to.username %}">{{ f.friend_to }}</a></li>
+	<li><a href="{% url profile_detail f.friend_to.username %}">{% avatar f.friend_to 24 %} {{ f.friend_to }}</a></li>
 {% endfor %}
 </ul>
-
+<div class="clearboth"></div>
+</div>
 
 {% endblock %}

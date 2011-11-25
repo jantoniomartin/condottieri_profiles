@@ -1,0 +1,34 @@
+#profile_avatar {
+	float: right;
+	margin: 0.5em;
+}
+
+dl {
+	margin: 1em;
+}
+
+dl dt {
+	font-weight: bold;
+}
+
+#body ul li {
+	list-style-type: none;
+}
+
+#friend_list {
+	clear: both;
+}
+
+#friend_list li {
+	float: left;
+	display: block;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	width: 24%;
+	height: 30px;
+	white-space: nowrap;
+}
+
+#friend_list li a {
+	text-decoration: none;
+}
