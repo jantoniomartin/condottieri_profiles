@@ -15,11 +15,11 @@ dl dt {
 	list-style-type: none;
 }
 
-#friend_list {
+.friend_list {
 	clear: both;
 }
 
-#friend_list li {
+.friend_list li {
 	float: left;
 	display: block;
 	overflow-x: hidden;
@@ -29,6 +29,6 @@ dl dt {
 	white-space: nowrap;
 }
 
-#friend_list li a {
+.friend_list li a {
 	text-decoration: none;
 }

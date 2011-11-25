@@ -18,6 +18,7 @@ def profile_detail(request, username=''):
 	profile = user.get_profile()
 	is_own = (request.user == user)
 	friends = user.friends.all()
+	chosen_by = user.friend_of.all()
 	is_friend = am_friend = False
 	if not is_own:
 		is_friend = user.id in request.user.friends.values_list('friend_to', flat=True)
@@ -25,6 +26,7 @@ def profile_detail(request, username=''):
 	context = {
 		'profile': profile,
 		'friends': friends,
+		'chosen_by': chosen_by,
 		'is_own' : is_own,
 		'is_friend': is_friend,
 		'am_friend': am_friend,

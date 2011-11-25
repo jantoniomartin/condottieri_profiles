@@ -57,6 +57,19 @@
 <dd>{{ profile.weighted_score }}</dd>
 <dt>{% trans "Times overthrown" %}</dt>
 <dd>{{ profile.overthrows }}</dd>
+	{% if not is_own %}
+	<dt>{% trans "Friendship" %}</dt>
+	{% if is_friend %}
+		<dd>{% blocktrans with profile.user.username as user %}{{ user }} is your friend.{% endblocktrans %}
+		(<a href="{% url change_friendship profile.user.username %}">{% trans "Unfriend" %}</a>)</dd>
+	{% else %}
+		<dd>{% blocktrans with profile.user.username as user %}{{ user }} is not your friend.{% endblocktrans %}
+		(<a href="{% url change_friendship profile.user.username %}">{% trans "Befriend" %}</a>)</dd>
+	{% endif %}
+	{% if am_friend %}
+		<dd>{% blocktrans with profile.user.username as user %}Your are a friend of {{ user }}.{% endblocktrans %}</dd>
+	{% endif %}
+	{% endif %}
 </dl>
 
 {% if is_own %}
@@ -67,21 +80,19 @@
 
 <div class="section">
 <h2>{% trans "Friends" %}</h2>
-	{% if not is_own %}
-	{% if is_friend %}
-		<p>{% blocktrans with profile.user.username as user %}{{ user }} is your friend.{% endblocktrans %}
-		(<a href="{% url change_friendship profile.user.username %}">{% trans "Unfriend" %}</a>)</p>
-	{% else %}
-		<p>{% blocktrans with profile.user.username as user %}{{ user }} is not your friend.{% endblocktrans %}
-		(<a href="{% url change_friendship profile.user.username %}">{% trans "Befriend" %}</a>)</p>
-	{% endif %}
-	{% if am_friend %}
-		<p>{% blocktrans with profile.user.username as user %}Your are a friend of {{ user }}.{% endblocktrans %}</p>
-	{% endif %}
-	{% endif %}
-<ul id="friend_list">
+<ul class="friend_list">
 {% for f in friends %}
 	<li><a href="{% url profile_detail f.friend_to.username %}">{% avatar f.friend_to 24 %} {{ f.friend_to }}</a></li>
+{% endfor %}
+</ul>
+<div class="clearboth"></div>
+</div>
+
+<div class="section">
+<h2>{% trans "Friend of" %}</h2>
+<ul class="friend_list">
+{% for f in chosen_by %}
+	<li><a href="{% url profile_detail f.friend_from.username %}">{% avatar f.friend_from 24 %} {{ f.friend_from }}</a></li>
 {% endfor %}
 </ul>
 <div class="clearboth"></div>
