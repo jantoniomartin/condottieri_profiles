@@ -1,0 +1,5 @@
+{% load i18n %}
+
+{% blocktrans %}{{ username }} has added you as a friend in Condottieri.{% endblocktrans %}
+
+<a href="{% url profile_detail username %}">{% trans "See the profile" %}</a>

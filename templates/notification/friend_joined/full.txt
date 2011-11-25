@@ -1,0 +1,9 @@
+{% load i18n %}
+
+{% blocktrans %}Your friend {{ username }} has joined the game {{ slug }}.{% endblocktrans %}
+
+<a href="{% url show-game slug%}">{% trans "Go to the game" %}</a>
+
+{% blocktrans %}You receive this notice because {{ username }} and you are
+friends in Condottieri.{% endblocktrans %}
+

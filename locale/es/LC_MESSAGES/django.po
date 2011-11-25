@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-25 12:25+0100\n"
+"POT-Creation-Date: 2011-11-25 22:06+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -197,10 +197,24 @@ msgstr "Hacer amigo"
 msgid "Your are a friend of %(user)s."
 msgstr "Eres amigo de %(user)s."
 
+#: templates/notification/friend_joined/full.txt:3
 #: templates/notification/friend_joined/notice.html:3
 #, python-format
 msgid "Your friend %(username)s has joined the game %(slug)s."
 msgstr "Tu amigo %(username)s se a unido al juego %(slug)s."
+
+#: templates/notification/friend_joined/full.txt:5
+msgid "Go to the game"
+msgstr "Ir al juego"
+
+#: templates/notification/friend_joined/full.txt:7
+#, python-format
+msgid ""
+"You receive this notice because %(username)s and you are\n"
+"friends in Condottieri."
+msgstr ""
+"Recibes este aviso porque %(username)s y tú sois\n"
+"amigos en Condottieri."
 
 #: templates/notification/karma_healed/full.txt:3
 msgid ""
@@ -217,6 +231,15 @@ msgid ""
 msgstr ""
 "Antes de unirte a un juego o crear uno, por favor, asegúrate de que\n"
 "estás realmente interesado en participar."
+
+#: templates/notification/new_friend/full.txt:3
+#, python-format
+msgid "%(username)s has added you as a friend in Condottieri."
+msgstr "%(username)s te ha añadido como amigo en Condottieri."
+
+#: templates/notification/new_friend/full.txt:5
+msgid "See the profile"
+msgstr "Ver el perfil"
 
 #: templates/notification/new_friend/notice.html:3
 #, python-format
