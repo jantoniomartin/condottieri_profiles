@@ -2,4 +2,4 @@
 
 {% blocktrans %}{{ username }} has added you as a friend in Condottieri.{% endblocktrans %}
 
-<a href="{% url profile_detail username %}">{% trans "See the profile" %}</a>
+{% trans "See the profile" %}: {{ current_site }}{% url profile_detail username %}
