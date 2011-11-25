@@ -29,8 +29,13 @@ from django.conf import settings
 from django.conf import global_settings
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
-from machiavelli.signals import government_overthrown
+from machiavelli.signals import government_overthrown, player_joined
 
+
+if "notification" in settings.INSTALLED_APPS:
+	from notification import models as notification
+else:
+	notification = None
 
 KARMA_MINIMUM = settings.KARMA_MINIMUM
 KARMA_DEFAULT = settings.KARMA_DEFAULT
@@ -140,5 +145,29 @@ class Friendship(models.Model):
 
 	def __unicode__(self):
 		return "%s is a friend of %s" % (self.friend_to, self.friend_from)
-	
 
+def was_befriended(sender, instance, created, **kwargs):
+	""" Notify a user when other user befriends him """
+	if notification and created:
+		recipients = [instance.friend_to, ]
+		extra_context = {'username': instance.friend_from,
+						'STATIC_URL': settings.STATIC_URL,}
+		notification.send(recipients, "new_friend", extra_context, on_site=True)
+
+post_save.connect(was_befriended, sender=Friendship)
+
+def friend_joined_game(sender, **kwargs):
+	""" Notify a user if a friend joins a game """
+	if notification:
+		user = sender.user
+		friend_of_ids = user.friend_of.values_list('friend_from', flat=True)
+		recipients = []
+		for f in user.friends.all():
+			if f.friend_to.id in friend_of_ids:
+				recipients.append(f.friend_to)
+		extra_context = {'username': sender.user.username,
+					'slug': sender.game.slug,
+					'STATIC_URL': settings.STATIC_URL,}	
+		notification.send(recipients, "friend_joined", extra_context, on_site=True)
+
+player_joined.connect(friend_joined_game)

@@ -10,6 +10,13 @@ if "notification" in settings.INSTALLED_APPS:
 		notification.create_notice_type("karma_healed",
 										_("Karma healed"),
 										_("you have recovered the minimum karma to join games"))
+		notification.create_notice_type("new_friend",
+										_("New friend"),
+										_("a user has befriended you"))
+		notification.create_notice_type("friend_joined",
+										_("Friend joined a game"),
+										_("a friend of you has just joined a game"))
+
 
 	signals.post_syncdb.connect(create_notice_types, sender=notification)
 else:
