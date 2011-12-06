@@ -41,6 +41,12 @@ KARMA_MINIMUM = settings.KARMA_MINIMUM
 KARMA_DEFAULT = settings.KARMA_DEFAULT
 KARMA_MAXIMUM = settings.KARMA_MAXIMUM
 
+class CondottieriProfileManager(models.Manager):
+	def hall_of_fame(self, order='weighted_score'):
+		if not order in CondottieriProfile._meta.get_all_field_names():
+			order = 'weighted_score'
+		order = ''.join(['-', order])
+		return self.order_by(order)
 
 class CondottieriProfile(models.Model):
 	""" Defines the actual profile for a Condottieri user.
@@ -63,6 +69,8 @@ class CondottieriProfile(models.Model):
 	""" Sum of devaluated game scores """
 	overthrows = models.PositiveIntegerField(default=0, editable=False)
 	""" Number of times that the player has been overthrown """
+
+	objects = CondottieriProfileManager()
 
 	def __unicode__(self):
 		return self.user.username
