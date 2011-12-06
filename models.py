@@ -44,10 +44,11 @@ KARMA_MAXIMUM = settings.KARMA_MAXIMUM
 class CondottieriProfileManager(models.Manager):
 	def hall_of_fame(self, order='weighted_score'):
 		if not (order in CondottieriProfile._meta.get_all_field_names() \
-			or order in ['avg_score',]):
+			or order in ['avg_score', 'count_games']):
 			order = 'weighted_score'
 		order = ''.join(['-', order])
-		return self.annotate(avg_score=models.Avg('user__score__points')).order_by(order)
+		return self.annotate(avg_score=models.Avg('user__score__points'),
+							count_games=models.Count('user__score')).order_by(order)
 
 class CondottieriProfile(models.Model):
 	""" Defines the actual profile for a Condottieri user.
