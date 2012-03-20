@@ -1,0 +1,247 @@
+# CATALAN TRANSLATION OF PROFILE DESCRIPTION FOR MACHIAVELLI APP IN CONDOTTIERI.
+# Copyright (C) RAFAEL ROMERO MORA, 2012
+# TThis file is distributed under the same license as the 'machiavelli' package.
+# FIRST AUTHOR <longrider186@yahoo.com>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-03-19 11:30+0100\n"
+"PO-Revision-Date: 2012-02-19 11:30+0100\n"
+"Last-Translator: RAFAEL ROMERO MORA <longrider186@yahoo.com>\n"
+"Language-Team: CA <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: models.py:49
+msgid "user"
+msgstr "usuari"
+
+#: models.py:51
+msgid "name"
+msgstr "nom"
+
+#: models.py:53
+msgid "about"
+msgstr "descripció"
+
+#: models.py:55
+msgid "location"
+msgstr "ubicació"
+
+#: models.py:57
+msgid "website"
+msgstr "pàgina web"
+
+#: models.py:126
+msgid "language"
+msgstr "idioma"
+
+#: views.py:44
+msgid "Your profile has been updated."
+msgstr "El teu perfil ha estat actualitzat."
+
+#: views.py:61
+msgid "Your languages have been updated."
+msgstr "Els teus idiomes han estat actualitzats."
+
+#: views.py:79
+#, python-format
+msgid "%s is now your friend."
+msgstr "Ara %s és el teu amic."
+
+#: views.py:82
+#, python-format
+msgid "%s is no longer your friend."
+msgstr "%s ja no és el teu amic."
+
+#: management/base.py:11
+msgid "Karma healed"
+msgstr "Karma curat"
+
+#: management/base.py:12
+msgid "you have recovered the minimum karma to join games"
+msgstr "has recuperat el karma mínim per unir-te a jocs"
+
+#: management/base.py:14
+msgid "New friend"
+msgstr "Nou amic"
+
+#: management/base.py:15
+msgid "a user has befriended you"
+msgstr "un usuari t'ha fet amic seu"
+
+#: management/base.py:17
+msgid "Friend joined a game"
+msgstr "Un amic s'ha unit a una partida"
+
+#: management/base.py:18
+msgid "a friend of you has just joined a game"
+msgstr "un amic teu s'ha unit a una partida"
+
+#: templates/condottieri_profiles/language_form.html:6
+#: templates/condottieri_profiles/profile_detail.html:8
+#: templates/condottieri_profiles/profile_form.html:6
+msgid "Profile"
+msgstr "Perfil"
+
+#: templates/condottieri_profiles/language_form.html:9
+#: templates/condottieri_profiles/profile_detail.html:37
+msgid "Known languages"
+msgstr "Idiomes coneguts"
+
+#: templates/condottieri_profiles/language_form.html:11
+msgid ""
+"Please, define here which languages can you read and write, so that other "
+"players know how to communicate with you. You can change them whenever you "
+"want."
+msgstr ""
+"Si us plau, defineix aquí quins idiomes pots llegir i escriure, per que d'altres "
+"jugadors sàpigen com comunicar-se amb tu. Pots canviar-los en qualsevol "
+"moment. "
+
+#: templates/condottieri_profiles/language_form.html:12
+msgid ""
+"If one of your languages is not listed, you can use the \"About\" section of "
+"your profile to mention it."
+msgstr ""
+"Si un dels teus idiomes no apareix a la llista pots fer ús de la secció "
+"\"Descripció\" del teu perfil per fer-ne esment."
+
+#: templates/condottieri_profiles/language_form.html:23
+#: templates/condottieri_profiles/profile_form.html:16
+msgid "Save"
+msgstr "Guardar"
+
+#: templates/condottieri_profiles/profile_detail.html:12
+#: templates/condottieri_profiles/profile_form.html:9
+msgid "Profile for"
+msgstr "Perfil de"
+
+#: templates/condottieri_profiles/profile_detail.html:20
+msgid "Change avatar"
+msgstr "Canviar avatar"
+
+#: templates/condottieri_profiles/profile_detail.html:26
+msgid "Name"
+msgstr "Nom"
+
+#: templates/condottieri_profiles/profile_detail.html:30
+msgid "About"
+msgstr "Descripció"
+
+#: templates/condottieri_profiles/profile_detail.html:34
+msgid "Location"
+msgstr "Ubicació"
+
+#: templates/condottieri_profiles/profile_detail.html:38
+#: templates/condottieri_profiles/profile_detail.html:63
+msgid "Edit"
+msgstr "Editar"
+
+#: templates/condottieri_profiles/profile_detail.html:41
+msgid "Website"
+msgstr "Pàgina web"
+
+#: templates/condottieri_profiles/profile_detail.html:44
+msgid "Karma"
+msgstr "Karma"
+
+#: templates/condottieri_profiles/profile_detail.html:50
+msgid "Total score"
+msgstr "Puntuació total"
+
+#: templates/condottieri_profiles/profile_detail.html:52
+msgid "Detail"
+msgstr "Detall"
+
+#: templates/condottieri_profiles/profile_detail.html:54
+msgid "Average points per game"
+msgstr "Mitjana de punts per partida"
+
+#: templates/condottieri_profiles/profile_detail.html:56
+msgid "Ranking score"
+msgstr "Puntuació al ranking"
+
+#: templates/condottieri_profiles/profile_detail.html:58
+msgid "Times overthrown"
+msgstr "Vegades derrocat"
+
+#: templates/condottieri_profiles/profile_detail.html:69
+msgid "Friends"
+msgstr "Amics"
+
+#: templates/condottieri_profiles/profile_detail.html:72
+#, python-format
+msgid "%(user)s is your friend."
+msgstr "%(user)s és el teu amic."
+
+#: templates/condottieri_profiles/profile_detail.html:73
+msgid "Unfriend"
+msgstr "Eliminar amistat"
+
+#: templates/condottieri_profiles/profile_detail.html:75
+#, python-format
+msgid "%(user)s is not your friend."
+msgstr "%(user)s ja no és el teu amic."
+
+#: templates/condottieri_profiles/profile_detail.html:76
+msgid "Befriend"
+msgstr "Fer amic"
+
+#: templates/condottieri_profiles/profile_detail.html:79
+#, python-format
+msgid "Your are a friend of %(user)s."
+msgstr "Ets amic de %(user)s."
+
+#: templates/notification/friend_joined/full.txt:3
+#: templates/notification/friend_joined/notice.html:3
+#, python-format
+msgid "Your friend %(username)s has joined the game %(slug)s."
+msgstr "El teu amic %(username)s s'ha unit a la partida %(slug)s."
+
+#: templates/notification/friend_joined/full.txt:5
+msgid "Go to the game"
+msgstr "Anar al joc"
+
+#: templates/notification/friend_joined/full.txt:7
+#, python-format
+msgid ""
+"You receive this notice because %(username)s and you are\n"
+"friends in Condottieri."
+msgstr ""
+"Reps aquest avís perquè %(username)s i tu sou \n"
+"amics en Condottieri."
+
+#: templates/notification/karma_healed/full.txt:3
+msgid ""
+"You have recovered enough karma to join a game or create a new\n"
+"one."
+msgstr ""
+"Has recuperat el karma mínim per unir-te a un joc o crear-ne un\n"
+"de nou."
+
+#: templates/notification/karma_healed/full.txt:6
+msgid ""
+"Before joining or creating a game, please, be sure that you\n"
+"are really interested in playing it."
+msgstr ""
+"Abans d'unir-te a un joc o crear-ne un, si us plau, assegurat que\n"
+"estàs realment interessat en participar-hi."
+
+#: templates/notification/new_friend/full.txt:3
+#, python-format
+msgid "%(username)s has added you as a friend in Condottieri."
+msgstr "%(username)s t'ha afegit com amic en Condottieri."
+
+#: templates/notification/new_friend/full.txt:5
+msgid "See the profile"
+msgstr "Veure el perfil"
+
+#: templates/notification/new_friend/notice.html:3
+#, python-format
+msgid "You are now a friend of %(username)s."
+msgstr "Ara ets amic de %(username)s."
