@@ -21,67 +21,94 @@
 {% endif %}
 </div>
 
-<dl>
+<div id="profile_table">
+<table>
 {% if profile.name %}
-<dt>{% trans "Name" %}</dt>
-<dd>{{ profile.name }}</dd>
+<tr>
+<th>{% trans "Name" %}:</th>
+<td>{{ profile.name }}</td>
+</tr>
 {% endif %}
 {% if 1 %}
-<dt>{% trans "Awards" %}</dt>
-<dd>
+<tr>
+<th>{% trans "Awards" %}:</th>
+<td>
 {% for b in profile.badges.all %}
 	<img src="{{ b.image.url }}" title="{{ b.description }}"/>
 {% endfor %}
-</dd>
+</td>
+</tr>
 {% endif %}
 {% if profile.about %}
-<dt>{% trans "About" %}</dt>
-<dd>{{ profile.about }}</dd>
+<tr>
+<th>{% trans "About" %}:</th>
+<td>{{ profile.about }}</td>
+</tr>
 {% endif %}
 {% if profile.location %}
-<dt>{% trans "Location" %}</dt>
-<dd>{{ profile.location }}</dd>
+<tr>
+<th>{% trans "Location" %}:</th>
+<td>{{ profile.location }}</td>
+</tr>
 {% endif %}
-<dt>{% trans "Known languages" %}
-{% if is_own %} (<a href="{% url profile_languages_edit %}">{% trans "Edit" %}</a>){% endif %}</dt>
-<dd>{{ profile.spokenlanguage_set.all|join:", " }}</dd>
+<tr>
+<th>{% trans "Known languages" %}:
+{% if is_own %} (<a href="{% url profile_languages_edit %}">{% trans "Edit" %}</a>){% endif %}</th>
+<td>{{ profile.spokenlanguage_set.all|join:", " }}</td>
+</tr>
 {% if profile.website %}
-<dt>{% trans "Website" %}</dt>
-<dd><a href="{{ profile.website }}">{{ profile.website }}</a></dd>
+<tr>
+<th>{% trans "Website" %}:</th>
+<td><a href="{{ profile.website }}">{{ profile.website }}</a></td>
+</tr>
 {% endif %}
-<dt>{% trans "Karma" %}</dt>
-<dd>{{ profile.karma|karma_stars }}
+<tr>
+<th>{% trans "Karma" %}:</th>
+<td>{{ profile.karma|karma_stars }}
 	{% if is_own %}
 	({{ profile.karma }})
 	{% endif %}
-</dd>
-<dt>{% trans "Total score" %}</dt>
-<dd>{{ profile.total_score|score_stars }} ({{ profile.total_score }}
+</td>
+</tr>
+<tr>
+<th>{% trans "Total score" %}:</th>
+<td>{{ profile.total_score|score_stars }} ({{ profile.total_score }}
 <a href="{% url ranking "user" profile.user.username %}">{% trans "Detail" %}</a>)
-</dd>
-<dt>{% trans "Average points per game" %}</dt>
-<dd>{{ profile.average_score }}</dd>
-<dt>{% trans "Ranking score" %}</dt>
-<dd>{{ profile.weighted_score }}</dd>
-<dt>{% trans "Times overthrown" %}</dt>
-<dd>{{ profile.overthrows }}</dd>
+</td>
+</tr>
+<tr>
+<th>{% trans "Average points per game" %}:</th>
+<td>{{ profile.average_score }}</td>
+</tr>
+<tr>
+<th>{% trans "Ranking score" %}:</th>
+<td>{{ profile.weighted_score }}</td>
+</tr>
+<tr>
+<th>{% trans "Times overthrown" %}:</th>
+<td>{{ profile.overthrows }}</td>
+</tr>
+<tr>
 	{% if not is_own %}
-	<dt>{% trans "Friendship" %}</dt>
+	<th>{% trans "Friendship" %}:</th>
 	{% if is_friend %}
-		<dd>{% blocktrans with profile.user.username as user %}{{ user }} is your friend.{% endblocktrans %}
-		(<a href="{% url change_friendship profile.user.username %}">{% trans "Unfriend" %}</a>)</dd>
+		<td>{% blocktrans with profile.user.username as user %}{{ user }} is your friend.{% endblocktrans %}
+		(<a href="{% url change_friendship profile.user.username %}">{% trans "Unfriend" %}</a>)</td>
 	{% else %}
-		<dd>{% blocktrans with profile.user.username as user %}{{ user }} is not your friend.{% endblocktrans %}
-		(<a href="{% url change_friendship profile.user.username %}">{% trans "Befriend" %}</a>)</dd>
+		<td>{% blocktrans with profile.user.username as user %}{{ user }} is not your friend.{% endblocktrans %}
+		(<a href="{% url change_friendship profile.user.username %}">{% trans "Befriend" %}</a>)</td>
 	{% endif %}
 	{% if am_friend %}
-		<dd>{% blocktrans with profile.user.username as user %}Your are a friend of {{ user }}.{% endblocktrans %}</dd>
+		<td>{% blocktrans with profile.user.username as user %}Your are a friend of {{ user }}.{% endblocktrans %}</td>
 	{% endif %}
 	{% endif %}
-</dl>
+</tr>
+</table>
+</div>
+
 
 {% if is_own %}
-	<p><a href="{% url profile_edit %}">{% trans "Edit" %}</a>.</p>
+	<p><a href="{% url profile_edit %}">{% trans "Edit" %}</a></p>
 {% endif %}
 
 </div>
