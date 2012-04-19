@@ -26,6 +26,14 @@
 <dt>{% trans "Name" %}</dt>
 <dd>{{ profile.name }}</dd>
 {% endif %}
+{% if 1 %}
+<dt>{% trans "Awards" %}</dt>
+<dd>
+{% for b in profile.badges.all %}
+	<img src="{{ b.image.url }}" title="{{ b.description }}"/>
+{% endfor %}
+</dd>
+{% endif %}
 {% if profile.about %}
 <dt>{% trans "About" %}</dt>
 <dd>{{ profile.about }}</dd>

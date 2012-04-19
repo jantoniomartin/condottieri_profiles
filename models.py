@@ -29,6 +29,8 @@ from django.conf import settings
 from django.conf import global_settings
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
+from transmeta import TransMeta
+
 from machiavelli.signals import government_overthrown, player_joined
 
 
@@ -71,6 +73,7 @@ class CondottieriProfile(models.Model):
 	""" Sum of devaluated game scores """
 	overthrows = models.PositiveIntegerField(default=0, editable=False)
 	""" Number of times that the player has been overthrown """
+	badges = models.ManyToManyField('Badge', verbose_name=_("badges"))
 
 	objects = CondottieriProfileManager()
 
@@ -181,3 +184,19 @@ def friend_joined_game(sender, **kwargs):
 		notification.send(recipients, "friend_joined", extra_context, on_site=True)
 
 player_joined.connect(friend_joined_game)
+
+class Badge(models.Model):
+	""" Defines an award or honor that a user may earn """
+	__metaclass__ = TransMeta
+
+	image = models.ImageField(_("image"), upload_to="badges")
+	description = models.CharField(_("description"), max_length=200)
+
+	class Meta:
+		verbose_name = _("badge")
+		verbose_name_plural = _("badges")
+		translate = ('description',)
+
+	def __unicode__(self):
+		return u"%s" % self.description
+

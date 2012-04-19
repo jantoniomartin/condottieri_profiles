@@ -8,7 +8,8 @@ class SpokenLanguageInline(admin.TabularInline):
 class CondottieriProfileAdmin(admin.ModelAdmin):
 	ordering = ['user__username']
 	list_display = ('__unicode__', 'location', 'website', 'karma', 'total_score', 'weighted_score', 'overthrows')
-	inlines = [SpokenLanguageInline, ]
+	inlines = [SpokenLanguageInline,]
 
 admin.site.register(CondottieriProfile, CondottieriProfileAdmin)
 admin.site.register(Friendship)
+admin.site.register(Badge)
