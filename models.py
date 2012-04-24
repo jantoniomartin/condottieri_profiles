@@ -120,7 +120,7 @@ class CondottieriProfile(models.Model):
 		self.save()
 
 def add_overthrow(sender, **kwargs):
-	profile = sender.user.get_profile()
+	profile = sender.government.get_profile()
 	profile.overthrow()
 
 government_overthrown.connect(add_overthrow)
