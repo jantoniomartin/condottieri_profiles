@@ -67,9 +67,9 @@ class CondottieriProfile(models.Model):
 	website = models.URLField(_("website"), null = True, blank = True, verify_exists = False)
 	karma = models.PositiveIntegerField(default=KARMA_DEFAULT, editable=False)
 	""" Total karma value """
-	total_score = models.PositiveIntegerField(default=0, editable=False)
+	total_score = models.IntegerField(default=0, editable=False)
 	""" Sum of game scores """
-	weighted_score = models.PositiveIntegerField(default=0, editable=False)
+	weighted_score = models.IntegerField(default=0, editable=False)
 	""" Sum of devaluated game scores """
 	overthrows = models.PositiveIntegerField(default=0, editable=False)
 	""" Number of times that the player has been overthrown """
