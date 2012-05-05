@@ -2,7 +2,8 @@ from django.core.management.base import NoArgsCommand, CommandError
 from django.conf import settings
 from django.db.models import F
 
-from jogging import logging
+import logging
+logger = logging.getLogger(__name__)
 
 if "notification" in settings.INSTALLED_APPS:
 	from notification import models as notification
