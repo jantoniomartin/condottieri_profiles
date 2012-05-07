@@ -5,4 +5,4 @@ from condottieri_profiles.models import *
 class ProfileForm(ModelForm):
 	class Meta:
 		model = CondottieriProfile
-		exclude = ('user',)
+		exclude = ('user', 'badges')
