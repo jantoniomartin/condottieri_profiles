@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from condottieri_profiles.models import *
+from condottieri_profiles.models import CondottieriProfile
 
 class ProfileForm(ModelForm):
 	class Meta:

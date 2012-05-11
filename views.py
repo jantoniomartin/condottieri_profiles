@@ -9,8 +9,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ObjectDoesNotExist
 
 ## condottieri_profiles
-from condottieri_profiles.models import *
-from condottieri_profiles.forms import *
+import condottieri_profiles.models as profiles
+import condottieri_profiles.forms as forms
 
 @login_required
 def profile_detail(request, username=''):
@@ -40,13 +40,13 @@ def profile_detail(request, username=''):
 def profile_edit(request):
 	profile = request.user.get_profile()
 	if request.method == 'POST':
-		form = ProfileForm(data=request.POST, instance=profile)
+		form = forms.ProfileForm(data=request.POST, instance=profile)
 		if form.is_valid():
 			form.save()
 			messages.success(request, _("Your profile has been updated."))
 			return redirect(profile)
 	else:	
-		form = ProfileForm(instance=profile)
+		form = forms.ProfileForm(instance=profile)
 
 	return render_to_response('condottieri_profiles/profile_form.html',
 							{'form': form,},
@@ -55,7 +55,7 @@ def profile_edit(request):
 @login_required
 def languages_edit(request):
 	profile = request.user.get_profile()
-	LangInlineFormSet = inlineformset_factory(CondottieriProfile, SpokenLanguage, extra=1)
+	LangInlineFormSet = inlineformset_factory(profiles.CondottieriProfile, profiles.SpokenLanguage, extra=1)
 	if request.method == 'POST':
 		formset = LangInlineFormSet(request.POST, instance=profile)
 		if formset.is_valid():
@@ -74,9 +74,9 @@ def change_friendship(request, username=''):
 	user_from = request.user
 	user_to = get_object_or_404(User, username=username)
 	try:
-		friendship = Friendship.objects.get(friend_from=user_from, friend_to=user_to)
+		friendship = profiles.Friendship.objects.get(friend_from=user_from, friend_to=user_to)
 	except ObjectDoesNotExist:
-		friendship = Friendship.objects.create(friend_from=user_from, friend_to=user_to)
+		friendship = profiles.Friendship.objects.create(friend_from=user_from, friend_to=user_to)
 		friendship.save()
 		msg = _("%s is now your friend.") % user_to.username
 	else:
