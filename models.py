@@ -99,7 +99,7 @@ class CondottieriProfile(models.Model):
 	def average_score(self):
 		games = self.user.score_set.count()
 		if games > 0:
-			return float(self.total_score / games)
+			return float(self.total_score) / games
 		else:	
 			return 0
 	
