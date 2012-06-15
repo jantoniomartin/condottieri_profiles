@@ -21,5 +21,6 @@ def sidebar_ranking(request):
 				context.update({'my_position': my_position,})
 		server = Server.objects.get()
 		context['ranking_last_update'] = server.ranking_last_update
+		context['top_users'] = top_users
 		cache.set(cache_key, context)
 	return context
