@@ -50,7 +50,7 @@ class CondottieriProfileManager(models.Manager):
 			order = 'weighted_score'
 		order = ''.join(['-', order])
 		return self.filter(total_score__gt=0, finished_games__gt=0).extra(
-			select={'avg_victories': "victories / finished_games"}).annotate(
+			select={'avg_victories': "100 * (victories / finished_games)"}).annotate(
 			avg_score=models.Avg('user__score__points')).order_by(order)
 
 class CondottieriProfile(models.Model):
