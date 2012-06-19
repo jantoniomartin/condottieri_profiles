@@ -49,7 +49,7 @@ class CondottieriProfileManager(models.Manager):
 			or order in ['avg_score', 'avg_victories']):
 			order = 'weighted_score'
 		order = ''.join(['-', order])
-		return self.filter(total_score__gt=0, finished_games__gt=0).extra(
+		return self.filter(total_score__gt=0, finished_games__gt=2).extra(
 			select={'avg_victories': "100 * (victories / finished_games)"}).annotate(
 			avg_score=models.Avg('user__score__points')).order_by(order)
 
