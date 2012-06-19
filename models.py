@@ -46,12 +46,12 @@ KARMA_MAXIMUM = settings.KARMA_MAXIMUM
 class CondottieriProfileManager(models.Manager):
 	def hall_of_fame(self, order='weighted_score'):
 		if not (order in CondottieriProfile._meta.get_all_field_names() \
-			or order in ['avg_score', 'count_games']):
+			or order in ['avg_score', 'avg_victories']):
 			order = 'weighted_score'
 		order = ''.join(['-', order])
-		return self.filter(total_score__gt=0).annotate(
-			avg_score=models.Avg('user__score__points'),
-			count_games=models.Count('user__score')).order_by(order)
+		return self.filter(total_score__gt=0, finished_games__gt=0).extra(
+			select={'avg_victories': "victories / finished_games"}).annotate(
+			avg_score=models.Avg('user__score__points')).order_by(order)
 
 class CondottieriProfile(models.Model):
 	""" Defines the actual profile for a Condottieri user.
@@ -72,6 +72,10 @@ class CondottieriProfile(models.Model):
 	""" Sum of game scores """
 	weighted_score = models.IntegerField(default=0, editable=False)
 	""" Sum of devaluated game scores """
+	finished_games = models.PositiveIntegerField(default=0, editable=False)
+	""" Number of games that the player has played to the end """
+	victories = models.PositiveIntegerField(default=0, editable=False)
+	""" Number of victories """
 	overthrows = models.PositiveIntegerField(default=0, editable=False)
 	""" Number of times that the player has been overthrown """
 	badges = models.ManyToManyField('Badge', verbose_name=_("badges"))
