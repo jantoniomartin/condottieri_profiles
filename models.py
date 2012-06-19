@@ -49,8 +49,9 @@ class CondottieriProfileManager(models.Manager):
 			or order in ['avg_score', 'count_games']):
 			order = 'weighted_score'
 		order = ''.join(['-', order])
-		return self.annotate(avg_score=models.Avg('user__score__points'),
-							count_games=models.Count('user__score')).order_by(order)
+		return self.filter(total_score__gt=0).annotate(
+			avg_score=models.Avg('user__score__points'),
+			count_games=models.Count('user__score')).order_by(order)
 
 class CondottieriProfile(models.Model):
 	""" Defines the actual profile for a Condottieri user.
