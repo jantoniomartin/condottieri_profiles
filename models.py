@@ -51,8 +51,7 @@ class CondottieriProfileManager(models.Manager):
 		order = ''.join(['-', order])
 		return self.filter(total_score__gt=0, finished_games__gt=2).extra(
 			select={'avg_victories': "100 * (victories / finished_games)",
-				'avg_score': "total_score / finished_games"})
-			#.annotate(avg_score=models.Avg('user__score__points')).order_by(order)
+				'avg_score': "total_score / finished_games"}).order_by(order)
 
 class CondottieriProfile(models.Model):
 	""" Defines the actual profile for a Condottieri user.
