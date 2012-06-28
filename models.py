@@ -50,8 +50,9 @@ class CondottieriProfileManager(models.Manager):
 			order = 'weighted_score'
 		order = ''.join(['-', order])
 		return self.filter(total_score__gt=0, finished_games__gt=2).extra(
-			select={'avg_victories': "100 * (victories / finished_games)"}).annotate(
-			avg_score=models.Avg('user__score__points')).order_by(order)
+			select={'avg_victories': "100 * (victories / finished_games)",
+				'avg_score': "total_score / finished_games"})
+			#.annotate(avg_score=models.Avg('user__score__points')).order_by(order)
 
 class CondottieriProfile(models.Model):
 	""" Defines the actual profile for a Condottieri user.
@@ -102,9 +103,8 @@ class CondottieriProfile(models.Model):
 			return True
 
 	def average_score(self):
-		games = self.user.score_set.count()
-		if games > 0:
-			return float(self.total_score) / games
+		if self.finished_games > 0:
+			return float(self.total_score) / self.finished_games
 		else:	
 			return 0
 	
