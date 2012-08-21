@@ -78,6 +78,8 @@ class CondottieriProfile(models.Model):
 	""" Number of victories """
 	overthrows = models.PositiveIntegerField(default=0, editable=False)
 	""" Number of times that the player has been overthrown """
+	surrenders = models.PositiveIntegerField(default=0, editable=False)
+	""" Number of times that the player has surrendered """
 	badges = models.ManyToManyField('Badge', verbose_name=_("badges"))
 	is_editor = models.BooleanField(_("Is editor?"), default=False)
 

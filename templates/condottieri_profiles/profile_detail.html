@@ -89,6 +89,10 @@
 <td>{{ profile.overthrows }}</td>
 </tr>
 <tr>
+<th>{% trans "Times surrendered" %}:</th>
+<td>{{ profile.surrenders }}</td>
+</tr>
+<tr>
 	{% if not is_own %}
 	<th>{% trans "Friendship" %}:</th>
 	{% if is_friend %}
