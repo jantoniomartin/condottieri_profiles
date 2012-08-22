@@ -132,6 +132,16 @@ def add_overthrow(sender, **kwargs):
 
 government_overthrown.connect(add_overthrow)
 
+def add_surrender(sender, **kwargs):
+	profile = sender.user.get_profile()
+	profile.surrenders += 1
+	try:
+		surrender_karma = settings.SURRENDER_KARMA
+	except:
+		surrender_karma = -10
+	profile.adjust_karma(surrender_karma)
+
+player_surrendered.connect(add_surrender)
 
 def create_profile(sender, instance=None, **kwargs):
 	""" Creates a profile associated to a User	"""
