@@ -31,7 +31,7 @@ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 from transmeta import TransMeta
 
-from machiavelli.signals import government_overthrown, player_joined
+from machiavelli.signals import government_overthrown, player_joined, player_surrendered
 
 
 if "notification" in settings.INSTALLED_APPS:
