@@ -126,6 +126,25 @@ class CondottieriProfile(models.Model):
 		self.overthrows += 1
 		self.save()
 
+	def check_karma_to_join(self, fast=False, private=False):
+		karma_to_join = getattr(settings, 'KARMA_TO_JOIN', 50)
+		karma_to_fast = getattr(settings, 'KARMA_TO_FAST', 110)
+		karma_to_private = getattr(settings, 'KARMA_TO_PRIVATE', 110)
+		karma_to_unlimited = getattr(settings, 'KARMA_TO_UNLIMITED', 0)
+		games_limit = getattr(settings, 'GAMES_LIMIT', 50)
+		if self.karma < karma_to_join:
+			return _("You need a minimum karma of %s to play a game.") % karma_to_join
+		if fast and self.karma < karma_to_fast:
+			return _("You need a minimum karma of %s to play a fast game.") % karma_to_fast
+		if private and self.karma < karma_to_private:
+			return _("You need a minimum karma of %s to create a private game.") % karma_to_private
+		if self.karma < karma_to_unlimited:
+			current_games = self.user.player_set.all().count()
+			if current_games >= games_limit:
+				return _("You need karma %s to play more than %s games.") % (karma_to_unlimited, games_limit)
+		return ""
+		
+
 def add_overthrow(sender, **kwargs):
 	if not sender.voluntary:
 		profile = sender.government.get_profile()
