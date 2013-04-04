@@ -65,7 +65,7 @@ class CondottieriProfile(models.Model):
 	""" More user info """
 	location = models.CharField(_('location'), max_length=40, null=True, blank=True)
 	""" Geographic location string """
-	website = models.URLField(_("website"), null = True, blank = True, verify_exists = False)
+	website = models.URLField(_("website"), null = True, blank = True)
 	karma = models.PositiveIntegerField(default=KARMA_DEFAULT, editable=False)
 	""" Total karma value """
 	total_score = models.IntegerField(default=0, editable=False)
