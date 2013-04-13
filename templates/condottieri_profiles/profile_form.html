@@ -5,7 +5,7 @@
 
 {% block head_title %}{% trans "Profile" %}{% endblock %}
 
-{% block body %}
+{% block main_content %}
 <h1>{% trans "Profile for" %} {{ user.username }}</h1>
 
 <form action="{% url profile_edit %}" method="POST" class="uniForm">
