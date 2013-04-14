@@ -57,7 +57,7 @@ class CondottieriProfile(models.Model):
 	""" Defines the actual profile for a Condottieri user.
 
 	"""
-	user = models.ForeignKey(User, unique=True, verbose_name=_('user'))
+	user = models.OneToOneField(User, verbose_name=_('user'))
 	""" A User object related to the profile """
 	name = models.CharField(_('name'), max_length=50, null=True, blank=True)
 	""" The user complete name """
