@@ -185,22 +185,6 @@ class CondottieriProfile(models.Model):
 	
 	language = property(_get_language)
 
-	def _get_avatar(self):
-		return avatar_tags.avatar(self.user)
-		try:
-			avatar = Avatar.objects.get(user=self.user, primary=True)
-		except ObjectDoesNotExist, MultipleObjectsReturned:
-			return None
-		return avatar
-	
-	#avatar = property(_get_avatar)
-
-	def _get_avatar_url(self):
-		return avatar_tags.avatar_url(self.user)
-		return self.avatar.avatar_url()
-
-	#avatar_url = property(_get_avatar_url)
-
 def add_overthrow(sender, **kwargs):
 	if not sender.voluntary:
 		profile = sender.government.get_profile()
