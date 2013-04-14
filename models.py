@@ -20,6 +20,8 @@
 profiles hold more information related to the game, such as scores, and karma.
 
 """
+from datetime import datetime
+import pytz
 
 from django.db import models
 from django.db.models.signals import post_save
@@ -30,6 +32,10 @@ from django.conf import global_settings
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 from transmeta import TransMeta
+
+import pybb.defaults
+from avatar.models import Avatar
+from avatar.templatetags import avatar_tags
 
 from machiavelli.signals import government_overthrown, player_joined, player_surrendered
 
@@ -82,8 +88,23 @@ class CondottieriProfile(models.Model):
 	""" Number of times that the player has surrendered """
 	badges = models.ManyToManyField('Badge', verbose_name=_("badges"))
 	is_editor = models.BooleanField(_("Is editor?"), default=False)
+	""" Fields needed by pybbm """
+	signature = models.TextField(_("Signature"), blank=True,
+		max_length=pybb.defaults.PYBB_SIGNATURE_MAX_LENGTH)
+	signature_html = models.TextField(_("Signature HTML Version"), blank=True,
+		max_length=pybb.defaults.PYBB_SIGNATURE_MAX_LENGTH + 30)
+	show_signatures = models.BooleanField(_("Show signatures"), blank=True,
+		default=True)
+	post_count = models.IntegerField(_('Post count'), blank=True, default=0)
+	autosubscribe = models.BooleanField(_("Automatically subscribe"),
+		help_text=_("Automatically subscribe to topics that you answer"),
+		default=pybb.defaults.PYBB_DEFAULT_AUTOSUBSCRIBE)
 
 	objects = CondottieriProfileManager()
+
+	def save(self, *args, **kwargs):
+		self.signature_html = pybb.defaults.PYBB_MARKUP_ENGINES[pybb.defaults.PYBB_MARKUP](self.signature)
+		super(CondottieriProfile, self).save(*args, **kwargs)
 
 	def __unicode__(self):
 		return self.user.username
@@ -143,7 +164,42 @@ class CondottieriProfile(models.Model):
 			if current_games >= games_limit:
 				return _("You need karma %s to play more than %s games.") % (karma_to_unlimited, games_limit)
 		return ""
-		
+
+	##
+	## Properties to proxy fields in PybbProfile
+	##
+	def _get_time_zone(self):
+		t = datetime.today()
+		today = datetime(t.year, t.month, t.day)
+		try:
+			tz = pytz.timezone(self.user.account.timezone)
+		except:
+			return 0
+		offset = float(tz.utcoffset(today).seconds) / 3600
+		return offset
+	
+	time_zone = property(_get_time_zone)
+
+	def _get_language(self):
+		return self.user.account.language
+	
+	language = property(_get_language)
+
+	def _get_avatar(self):
+		return avatar_tags.avatar(self.user)
+		try:
+			avatar = Avatar.objects.get(user=self.user, primary=True)
+		except ObjectDoesNotExist, MultipleObjectsReturned:
+			return None
+		return avatar
+	
+	#avatar = property(_get_avatar)
+
+	def _get_avatar_url(self):
+		return avatar_tags.avatar_url(self.user)
+		return self.avatar.avatar_url()
+
+	#avatar_url = property(_get_avatar_url)
 
 def add_overthrow(sender, **kwargs):
 	if not sender.voluntary:
