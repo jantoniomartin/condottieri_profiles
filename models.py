@@ -35,6 +35,7 @@ from transmeta import TransMeta
 
 import pybb.defaults
 from avatar.models import Avatar
+from avatar.templatetags import avatar_tags
 
 from machiavelli.signals import government_overthrown, player_joined, player_surrendered
 
@@ -95,7 +96,7 @@ class CondottieriProfile(models.Model):
 	show_signatures = models.BooleanField(_("Show signatures"), blank=True,
 		default=True)
 	post_count = models.IntegerField(_('Post count'), blank=True, default=0)
-	autosuscribe = models.BooleanField(_("Automatically subscribe"),
+	autosubscribe = models.BooleanField(_("Automatically subscribe"),
 		help_text=_("Automatically subscribe to topics that you answer"),
 		default=pybb.defaults.PYBB_DEFAULT_AUTOSUBSCRIBE)
 
@@ -185,18 +186,20 @@ class CondottieriProfile(models.Model):
 	language = property(_get_language)
 
 	def _get_avatar(self):
+		return avatar_tags.avatar(self.user)
 		try:
 			avatar = Avatar.objects.get(user=self.user, primary=True)
 		except ObjectDoesNotExist, MultipleObjectsReturned:
 			return None
 		return avatar
 	
-	avatar = property(_get_avatar)
+	#avatar = property(_get_avatar)
 
 	def _get_avatar_url(self):
+		return avatar_tags.avatar_url(self.user)
 		return self.avatar.avatar_url()
 
-	avatar_url = property(_get_avatar_url)
+	#avatar_url = property(_get_avatar_url)
 
 def add_overthrow(sender, **kwargs):
 	if not sender.voluntary:
