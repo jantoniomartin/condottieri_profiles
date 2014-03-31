@@ -33,10 +33,10 @@ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 from transmeta import TransMeta
 
-import pybb.defaults
 from avatar.models import Avatar
 from avatar.templatetags import avatar_tags
 
+from condottieri_profiles.defaults import *
 from machiavelli.signals import government_overthrown, player_joined, player_surrendered
 
 
@@ -44,10 +44,6 @@ if "notification" in settings.INSTALLED_APPS:
 	from notification import models as notification
 else:
 	notification = None
-
-KARMA_MINIMUM = settings.KARMA_MINIMUM
-KARMA_DEFAULT = settings.KARMA_DEFAULT
-KARMA_MAXIMUM = settings.KARMA_MAXIMUM
 
 class CondottieriProfileManager(models.Manager):
 	def hall_of_fame(self, order='weighted_score'):
@@ -90,20 +86,23 @@ class CondottieriProfile(models.Model):
 	is_editor = models.BooleanField(_("Is editor?"), default=False)
 	""" Fields needed by pybbm """
 	signature = models.TextField(_("Signature"), blank=True,
-		max_length=pybb.defaults.PYBB_SIGNATURE_MAX_LENGTH)
+		max_length=SIGNATURE_MAX_LENGTH)
 	signature_html = models.TextField(_("Signature HTML Version"), blank=True,
-		max_length=pybb.defaults.PYBB_SIGNATURE_MAX_LENGTH + 30)
+		max_length=SIGNATURE_MAX_LENGTH + 30)
 	show_signatures = models.BooleanField(_("Show signatures"), blank=True,
 		default=True)
 	post_count = models.IntegerField(_('Post count'), blank=True, default=0)
 	autosubscribe = models.BooleanField(_("Automatically subscribe"),
 		help_text=_("Automatically subscribe to topics that you answer"),
-		default=pybb.defaults.PYBB_DEFAULT_AUTOSUBSCRIBE)
+		default=DEFAULT_AUTOSUBSCRIBE)
 
 	objects = CondottieriProfileManager()
 
 	def save(self, *args, **kwargs):
-		self.signature_html = pybb.defaults.PYBB_MARKUP_ENGINES[pybb.defaults.PYBB_MARKUP](self.signature)
+		if MARKUP_ENGINE:
+			self.signature_html = MARKUP_ENGINE(self.signature)
+		else:
+			self.signature_html = self.signature
 		super(CondottieriProfile, self).save(*args, **kwargs)
 
 	def __unicode__(self):
@@ -148,21 +147,21 @@ class CondottieriProfile(models.Model):
 		self.save()
 
 	def check_karma_to_join(self, fast=False, private=False):
-		karma_to_join = getattr(settings, 'KARMA_TO_JOIN', 50)
-		karma_to_fast = getattr(settings, 'KARMA_TO_FAST', 110)
-		karma_to_private = getattr(settings, 'KARMA_TO_PRIVATE', 110)
-		karma_to_unlimited = getattr(settings, 'KARMA_TO_UNLIMITED', 0)
-		games_limit = getattr(settings, 'GAMES_LIMIT', 50)
-		if self.karma < karma_to_join:
-			return _("You need a minimum karma of %s to play a game.") % karma_to_join
-		if fast and self.karma < karma_to_fast:
-			return _("You need a minimum karma of %s to play a fast game.") % karma_to_fast
-		if private and self.karma < karma_to_private:
-			return _("You need a minimum karma of %s to create a private game.") % karma_to_private
-		if self.karma < karma_to_unlimited:
+		if self.karma < KARMA_TO_JOIN:
+			return _("You need a minimum karma of %s to play a game.") % \
+					KARMA_TO_JOIN
+		if fast and self.karma < KARMA_TO_FAST:
+			return _("You need a minimum karma of %s to play a fast game.") % \
+					KARMA_TO_FAST
+		if private and self.karma < KARMA_TO_PRIVATE:
+			return \
+				_("You need a minimum karma of %s to create a private game.") \
+					% KARMA_TO_PRIVATE
+		if self.karma < KARMA_TO_UNLIMITED:
 			current_games = self.user.player_set.all().count()
-			if current_games >= games_limit:
-				return _("You need karma %s to play more than %s games.") % (karma_to_unlimited, games_limit)
+			if current_games >= GAMES_LIMIT:
+				return _("You need karma %s to play more than %s games.") % \
+						(KARMA_TO_UNLIMITED, GAMES_LIMIT)
 		return ""
 
 	##
@@ -196,7 +195,7 @@ def add_surrender(sender, **kwargs):
 	profile = sender.user.get_profile()
 	profile.surrenders += 1
 	try:
-		surrender_karma = settings.SURRENDER_KARMA
+		surrender_karma = SURRENDER_KARMA
 	except:
 		surrender_karma = -10
 	profile.adjust_karma(surrender_karma)
