@@ -109,7 +109,7 @@ class CondottieriProfile(models.Model):
 		return self.user.username
 
 	def get_absolute_url(self):
-		return ('profile_detail', None, {'slug': self.user.username})
+		return ('profile_detail', None, {'username': self.user.username})
 	get_absolute_url = models.permalink(get_absolute_url)
 
 	def has_languages(self):

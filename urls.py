@@ -7,7 +7,7 @@ from django.views.decorators.cache import cache_page
 from condottieri_profiles.views import *
 
 urlpatterns = patterns('condottieri_profiles.views',
-	url(r'^profile/(?P<slug>\w+)$',
+	url(r'^profile/(?P<username>\w+)$',
 		ProfileDetailView.as_view(),
 		name='profile_detail'
 	),

@@ -22,11 +22,11 @@ class CondottieriProfileViewsTests(TestCase):
 			reverse('profile_detail', args=['user_0'])
 		)
 		request.user = self.user_0
-		response = ProfileDetailView.as_view()(request, slug='user_0')
+		response = ProfileDetailView.as_view()(request, username='user_0')
 		self.assertEqual(response.status_code, 200)
 		self.assertTrue(response.context_data['is_own'])
 		request.user = self.user_1
-		response = ProfileDetailView.as_view()(request, slug='user_0')
+		response = ProfileDetailView.as_view()(request, username='user_0')
 		self.assertEqual(response.status_code, 200)
 		self.assertFalse(response.context_data['is_own'])
 

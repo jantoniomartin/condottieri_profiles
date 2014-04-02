@@ -25,6 +25,7 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
 	model = User
 	template_name = 'condottieri_profiles/profile_detail.html'
 	slug_field = 'username'
+	slug_url_kwarg = 'username'
 
 	def get_context_data(self, **kwargs):
 		ctx = super(ProfileDetailView, self).get_context_data(**kwargs)
