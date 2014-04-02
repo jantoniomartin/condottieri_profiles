@@ -52,8 +52,7 @@
 </tr>
 {% endif %}
 <tr>
-<th>{% trans "Known languages" %}:
-{% if is_own %} (<a href="{% url profile_languages_edit %}">{% trans "Edit" %}</a>){% endif %}</th>
+<th>{% trans "Known languages" %}:</th>
 <td>{{ profile.spokenlanguage_set.all|join:", " }}</td>
 </tr>
 {% if profile.website %}

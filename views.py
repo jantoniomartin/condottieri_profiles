@@ -1,88 +1,85 @@
 ## django
-from django.shortcuts import render_to_response, get_object_or_404, redirect
-from django.template import RequestContext
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.forms.models import inlineformset_factory
 from django.contrib import messages
+from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.generic import DetailView
+from django.views.generic.base import RedirectView
+
+from extra_views import InlineFormSet, UpdateWithInlinesView
 
 ## condottieri_profiles
-import condottieri_profiles.models as profiles
-import condottieri_profiles.forms as forms
+from condottieri_profiles.models import *
+from condottieri_profiles.forms import *
 
-@login_required
-def profile_detail(request, username=''):
-	user = get_object_or_404(User, username=username)
-	profile = user.get_profile()
-	is_own = (request.user == user)
-	friends = user.friends.all()
-	chosen_by = user.friend_of.all()
-	is_friend = am_friend = False
-	if not is_own:
-		is_friend = user.id in request.user.friends.values_list('friend_to', flat=True)
-		am_friend = request.user.id in user.friend_of.values_list('friend_to', flat=True)
-	context = {
-		'profile': profile,
-		'friends': friends,
-		'chosen_by': chosen_by,
-		'is_own' : is_own,
-		'is_friend': is_friend,
-		'am_friend': am_friend,
-	}
+class LoginRequiredMixin(object):
+	##TODO: move this to middleware
+	@method_decorator(login_required)
+	def dispatch(self, *args, **kwargs):
+		return super(LoginRequiredMixin, self).dispatch(*args, **kwargs)
 
-	return render_to_response('condottieri_profiles/profile_detail.html',
-							context,
-							context_instance=RequestContext(request))
+class ProfileDetailView(LoginRequiredMixin, DetailView):
+	model = User
+	template_name = 'condottieri_profiles/profile_detail.html'
+	slug_field = 'username'
 
-@login_required
-def profile_edit(request):
-	profile = request.user.get_profile()
-	if request.method == 'POST':
-		form = forms.ProfileForm(data=request.POST, instance=profile)
-		if form.is_valid():
-			form.save()
-			messages.success(request, _("Your profile has been updated."))
-			return redirect(profile)
-	else:	
-		form = forms.ProfileForm(instance=profile)
+	def get_context_data(self, **kwargs):
+		ctx = super(ProfileDetailView, self).get_context_data(**kwargs)
+		is_friend = am_friend = None
+		ctx.update({
+			'profile': self.object.get_profile(),
+			'friends': self.object.friends.all(),
+			'chosen_by': self.object.friend_of.all(),
+			'is_own': self.request.user == self.object,
+		})
+		if self.request.user != self.object:
+			ctx.update({
+				'is_friend': self.object.id in self.request.user.friends. \
+						values_list('friend_to', flat=True),
+				'am_friend': self.request.user.id in self.object.friend_of. \
+						values_list('friend_to', flat=True),
+			})
+		return ctx
 
-	return render_to_response('condottieri_profiles/profile_form.html',
-							{'form': form,},
-							context_instance=RequestContext(request))
+class LanguagesInline(InlineFormSet):
+	model = SpokenLanguage
+	extra = 1
 
-@login_required
-def languages_edit(request):
-	profile = request.user.get_profile()
-	LangInlineFormSet = inlineformset_factory(profiles.CondottieriProfile, profiles.SpokenLanguage, extra=1)
-	if request.method == 'POST':
-		formset = LangInlineFormSet(request.POST, instance=profile)
-		if formset.is_valid():
-			formset.save()
-			messages.success(request, _("Your languages have been updated."))
-			return redirect(profile)
-	else:
-		formset = LangInlineFormSet(instance=profile)
+class ProfileUpdateView(LoginRequiredMixin, UpdateWithInlinesView):
+	model = CondottieriProfile
+	form_class = ProfileForm
+	template_name = 'condottieri_profiles/profile_form.html'
+	inlines = [LanguagesInline,]
 
-	return render_to_response('condottieri_profiles/language_form.html',
-							{'formset': formset,},
-							context_instance=RequestContext(request))
+	def get_object(self, queryset=None):
+		return self.request.user.get_profile()
 
-@login_required
-def change_friendship(request, username=''):
-	user_from = request.user
-	user_to = get_object_or_404(User, username=username)
-	try:
-		friendship = profiles.Friendship.objects.get(friend_from=user_from, friend_to=user_to)
-	except ObjectDoesNotExist:
-		friendship = profiles.Friendship.objects.create(friend_from=user_from, friend_to=user_to)
-		friendship.save()
-		msg = _("%s is now your friend.") % user_to.username
-	else:
-		friendship.delete()
-		msg = _("%s is no longer your friend.") % user_to.username
-	messages.success(request, msg)
-	return redirect(user_to.get_profile())
+	def get_success_url(self):
+		messages.success(self.request, _("Your profile has been updated."))
+		return self.request.user.get_profile().get_absolute_url()
 
-	
+class ToggleFriendshipView(LoginRequiredMixin, RedirectView):
+	def get_redirect_url(self, *args, **kwargs):
+		user_from = self.request.user
+		user_to = get_object_or_404(User, username=self.kwargs['username'])
+		try:
+			friendship = Friendship.objects.get(
+				friend_from=user_from,
+				friend_to=user_to
+			)
+		except ObjectDoesNotExist:
+			friendship = Friendship.objects.create(
+				friend_from=user_from,
+				friend_to=user_to
+			)
+			friendship.save()
+			msg = _("%s is now your friend.") % user_to.username
+		else:
+			friendship.delete()
+			msg = _("%s is no longer your friend.") % user_to.username
+		messages.success(self.request, msg)
+		return user_to.get_profile().get_absolute_url()
+
