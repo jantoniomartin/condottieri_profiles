@@ -2,7 +2,7 @@ Condottieri, a web based version of the classic game 'Machiavelli'
 ==================================================================
 
 **Condottieri** is a web based version of the Avalon Hill's game **Machiavelli**.
-It's being developed on Django, Pinax and Python, and since October 18th 2010 it
+It's being developed on Django and Python, and since October 18th 2010 it
 is free and open source software (see COPYING for details on the license).
 
 This project was started by a fan of Machiavelli, only for fun and learning.
@@ -18,10 +18,6 @@ This is a Django app made to be plugged to a Django project. Before,
 it was part of a common repository (http://github.com/jantoniomartin/condottieri) that integrated the entire Condottieri project. Now, all the applications in
 this project have been separated in different repositories, so that they can be
 used separetely.
-
-'condottieri_profiles' is an extension of the Pinax's 'profiles' application.
-It adds some features to this application, related with the game, such as
-karma, scores, etc.
 
 Other applications that were a part of Condottieri and that now have their
 own repositories include:
