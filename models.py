@@ -16,10 +16,6 @@
 ##
 ## AUTHOR: Jose Antonio Martin <jantonio.martin AT gmail DOT com>
 
-""" This application is meant to substitute the profiles in Pinax, so that the
-profiles hold more information related to the game, such as scores, and karma.
-
-"""
 from datetime import datetime
 import pytz
 
@@ -59,7 +55,7 @@ class CondottieriProfile(models.Model):
 	""" Defines the actual profile for a Condottieri user.
 
 	"""
-	user = models.OneToOneField(User, verbose_name=_('user'))
+	user = models.OneToOneField(User, verbose_name=_('user'), related_name='profile')
 	""" A User object related to the profile """
 	name = models.CharField(_('name'), max_length=50, null=True, blank=True)
 	""" The user complete name """
@@ -186,13 +182,13 @@ class CondottieriProfile(models.Model):
 
 def add_overthrow(sender, **kwargs):
 	if not sender.voluntary:
-		profile = sender.government.get_profile()
+		profile = sender.government.profile
 		profile.overthrow()
 
 government_overthrown.connect(add_overthrow)
 
 def add_surrender(sender, **kwargs):
-	profile = sender.user.get_profile()
+	profile = sender.user.profile
 	profile.surrenders += 1
 	try:
 		surrender_karma = SURRENDER_KARMA

@@ -31,7 +31,7 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
 		ctx = super(ProfileDetailView, self).get_context_data(**kwargs)
 		is_friend = am_friend = None
 		ctx.update({
-			'profile': self.object.get_profile(),
+			'profile': self.object.profile,
 			'friends': self.object.friends.all(),
 			'chosen_by': self.object.friend_of.all(),
 			'is_own': self.request.user == self.object,
@@ -56,11 +56,11 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateWithInlinesView):
 	inlines = [LanguagesInline,]
 
 	def get_object(self, queryset=None):
-		return self.request.user.get_profile()
+		return self.request.user.profile
 
 	def get_success_url(self):
 		messages.success(self.request, _("Your profile has been updated."))
-		return self.request.user.get_profile().get_absolute_url()
+		return self.request.user.profile.get_absolute_url()
 
 class ToggleFriendshipView(LoginRequiredMixin, RedirectView):
 	def get_redirect_url(self, *args, **kwargs):
@@ -82,5 +82,5 @@ class ToggleFriendshipView(LoginRequiredMixin, RedirectView):
 			friendship.delete()
 			msg = _("%s is no longer your friend.") % user_to.username
 		messages.success(self.request, msg)
-		return user_to.get_profile().get_absolute_url()
+		return user_to.profile.get_absolute_url()
 
