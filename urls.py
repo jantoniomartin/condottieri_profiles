@@ -1,8 +1,4 @@
-from django.conf.urls.defaults import *
-#from django.views.generic import list_detail
-#from django.views.generic.create_update import create_object
-from django.views.generic.simple import direct_to_template
-from django.views.decorators.cache import cache_page
+from django.conf.urls import *
 
 from condottieri_profiles.views import *
 
