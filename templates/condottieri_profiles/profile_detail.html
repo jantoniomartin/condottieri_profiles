@@ -17,7 +17,7 @@
 <div id="profile_avatar">
 {% avatar profile.user %}<br/>
 {% if is_own %}
-<a href="{% url avatar_change %}">{% trans "Change avatar" %}</a>
+<a href="{% url "avatar_change" %}">{% trans "Change avatar" %}</a>
 {% endif %}
 </div>
 
@@ -72,7 +72,7 @@
 <tr>
 <th>{% trans "Total score" %}:</th>
 <td>{{ profile.total_score|score_stars }} ({{ profile.total_score }}
-<a href="{% url ranking "user" profile.user.username %}">{% trans "Detail" %}</a>)
+<a href="{% url "ranking" "user" profile.user.username %}">{% trans "Detail" %}</a>)
 </td>
 </tr>
 <tr>
@@ -96,10 +96,10 @@
 	<th>{% trans "Friendship" %}:</th>
 	{% if is_friend %}
 		<td>{% blocktrans with profile.user.username as user %}{{ user }} is your friend.{% endblocktrans %}
-		(<a href="{% url change_friendship profile.user.username %}">{% trans "Unfriend" %}</a>)</td>
+		(<a href="{% url "change_friendship" profile.user.username %}">{% trans "Unfriend" %}</a>)</td>
 	{% else %}
 		<td>{% blocktrans with profile.user.username as user %}{{ user }} is not your friend.{% endblocktrans %}
-		(<a href="{% url change_friendship profile.user.username %}">{% trans "Befriend" %}</a>)</td>
+		(<a href="{% url "change_friendship" profile.user.username %}">{% trans "Befriend" %}</a>)</td>
 	{% endif %}
 	{% if am_friend %}
 		<td>{% blocktrans with profile.user.username as user %}Your are a friend of {{ user }}.{% endblocktrans %}</td>
@@ -111,7 +111,7 @@
 
 
 {% if is_own %}
-	<p><a href="{% url profile_edit %}">{% trans "Edit" %}</a></p>
+	<p><a href="{% url "profile_edit" %}">{% trans "Edit" %}</a></p>
 {% endif %}
 
 </div>
@@ -120,7 +120,7 @@
 <h2>{% trans "Friends" %}</h2>
 <ul class="friend_list">
 {% for f in friends %}
-	<li><a href="{% url profile_detail f.friend_to.username %}">{% avatar f.friend_to 24 %} {{ f.friend_to }}</a></li>
+	<li><a href="{% url "profile_detail" f.friend_to.username %}">{% avatar f.friend_to 24 %} {{ f.friend_to }}</a></li>
 {% endfor %}
 </ul>
 <div class="clearboth"></div>
@@ -130,7 +130,7 @@
 <h2>{% trans "Friend of" %}</h2>
 <ul class="friend_list">
 {% for f in chosen_by %}
-	<li><a href="{% url profile_detail f.friend_from.username %}">{% avatar f.friend_from 24 %} {{ f.friend_from }}</a></li>
+	<li><a href="{% url "profile_detail" f.friend_from.username %}">{% avatar f.friend_from 24 %} {{ f.friend_from }}</a></li>
 {% endfor %}
 </ul>
 <div class="clearboth"></div>

@@ -2,7 +2,7 @@
 
 {% blocktrans %}Your friend {{ username }} has joined the game {{ slug }}.{% endblocktrans %}
 
-{% trans "Go to the game" %}: {{ current_site }}{% url show-game slug %}
+{% trans "Go to the game" %}: {{ current_site }}{% url "show-game" slug %}
 
 {% blocktrans %}You receive this notice because {{ username }} and you are
 friends in Condottieri.{% endblocktrans %}

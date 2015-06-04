@@ -1,4 +1,4 @@
 {% load i18n %}
 
 {% blocktrans %}You are now a friend of {{ username }}.{% endblocktrans %}
-<a href="{% url profile_detail username %}"><img src="{{ STATIC_URL }}condottieri_profiles/img/link.png" alt="Go" /></a>
+<a href="{% url "profile_detail" username %}"><img src="{{ STATIC_URL }}condottieri_profiles/img/link.png" alt="Go" /></a>
