@@ -36,8 +36,8 @@ from condottieri_profiles.defaults import *
 from machiavelli.signals import government_overthrown, player_joined, player_surrendered
 
 
-if "notification" in settings.INSTALLED_APPS:
-    from notification import models as notification
+if "pinax.notifications" in settings.INSTALLED_APPS:
+    from pinax.notifications import models as notification
 else:
     notification = None
 
@@ -239,7 +239,7 @@ def was_befriended(sender, instance, created, **kwargs):
         recipients = [instance.friend_to, ]
         extra_context = {'username': instance.friend_from,
                         'STATIC_URL': settings.STATIC_URL,}
-        notification.send(recipients, "new_friend", extra_context, on_site=True)
+        notification.send(recipients, "new_friend", extra_context)
 
 post_save.connect(was_befriended, sender=Friendship)
 
@@ -255,7 +255,7 @@ def friend_joined_game(sender, **kwargs):
         extra_context = {'username': sender.user.username,
                     'slug': sender.game.slug,
                     'STATIC_URL': settings.STATIC_URL,} 
-        notification.send(recipients, "friend_joined", extra_context, on_site=True)
+        notification.send(recipients, "friend_joined", extra_context)
 
 player_joined.connect(friend_joined_game)
 
