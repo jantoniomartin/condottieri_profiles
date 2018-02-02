@@ -200,8 +200,10 @@ def add_surrender(sender, **kwargs):
 
 player_surrendered.connect(add_surrender)
 
-def create_profile(sender, instance=None, **kwargs):
+def create_profile(sender, instance, created, raw, **kwargs):
     """ Creates a profile associated to a User  """
+    if raw:
+        return
     if instance is None:
         return
     profile, created = CondottieriProfile.objects.get_or_create(user=instance)
@@ -233,9 +235,9 @@ class Friendship(models.Model):
     def __unicode__(self):
         return "%s is a friend of %s" % (self.friend_to, self.friend_from)
 
-def was_befriended(sender, instance, created, **kwargs):
+def was_befriended(sender, instance, created, raw, **kwargs):
     """ Notify a user when other user befriends him """
-    if notification and created:
+    if notification and created and not raw:
         recipients = [instance.friend_to, ]
         extra_context = {'username': instance.friend_from,
                         'STATIC_URL': settings.STATIC_URL,}
