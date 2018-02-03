@@ -182,6 +182,9 @@ class CondottieriProfile(models.Model):
     
     language = property(_get_language)
 
+    def get_display_name(self):
+        return self.user.username
+
 def add_overthrow(sender, **kwargs):
     if not sender.voluntary:
         profile = sender.government.profile
