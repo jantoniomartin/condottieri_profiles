@@ -1,7 +1,7 @@
 {% extends 'condottieri_profiles/base.html' %}
 
 {% load i18n %}
-{% load uni_form_tags %}
+{% load crispy_forms_tags %}
 
 {% block head_title %}{% trans "Profile" %}{% endblock %}
 
@@ -11,7 +11,7 @@
 <form action="{% url "profile_edit" %}" method="POST" class="uniForm">
 {% csrf_token %}
 <fieldset class="inlineLabels">
-	{{ form|as_uni_form }}
+	{{ form|crispy }}
 
 	<table style="width: 100%">
 	{% for inline in inlines %}
