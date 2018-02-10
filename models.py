@@ -209,6 +209,11 @@ def create_profile(sender, instance, created, raw, **kwargs):
         return
     if instance is None:
         return
+    ##The following line prevents pybb causing an IntegrityError when it tries
+    ##to create the user profile for a second time.
+    ##TODO: Look for a better solution.
+    if 'pybb' in settings.INSTALLED_APPS:
+        return
     profile, created = CondottieriProfile.objects.get_or_create(user=instance)
 
 post_save.connect(create_profile, sender=User)
