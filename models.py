@@ -269,9 +269,8 @@ def friend_joined_game(sender, **kwargs):
 
 player_joined.connect(friend_joined_game)
 
-class Badge(models.Model):
+class Badge(models.Model, metaclass=TransMeta):
     """ Defines an award or honor that a user may earn """
-    __metaclass__ = TransMeta
 
     image = models.ImageField(_("image"), upload_to="badges")
     description = models.CharField(_("description"), max_length=200)
@@ -282,5 +281,5 @@ class Badge(models.Model):
         translate = ('description',)
 
     def __unicode__(self):
-        return u"%s" % self.description
+        return "%s" % self.description
 

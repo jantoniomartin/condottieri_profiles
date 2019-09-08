@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_noop as _
 def create_notice_types(sender, **kwargs):
     if "pinax.notifications" in settings.INSTALLED_APPS:
         from pinax.notifications.models import NoticeType 
-        print "Creating notices for condottieri_profiles"
+        print("Creating notices for condottieri_profiles")
         NoticeType.create("karma_healed",
             _("Karma healed"),
             _("you have recovered the minimum karma to join games"))
@@ -15,4 +15,4 @@ def create_notice_types(sender, **kwargs):
             _("Friend joined a game"),
             _("a friend of you has just joined a game"))
     else:
-        print "condottieri_profiles: Skipping creation of NoticeTypes"
+        print("condottieri_profiles: Skipping creation of NoticeTypes")

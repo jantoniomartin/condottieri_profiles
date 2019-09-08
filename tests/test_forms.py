@@ -13,6 +13,6 @@ class ProfileFormTestCase(TestCase):
 				'website': 'http://example.com',
 				'autosubscribe': True,
 			})
-		self.failUnless(form.is_valid())
+		self.assertTrue(form.is_valid())
 
 
