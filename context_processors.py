@@ -4,7 +4,7 @@ from condottieri_profiles.models import CondottieriProfile
 from condottieri_common.models import Server
 
 def sidebar_ranking(request):
-	if request.user.is_authenticated():
+	if request.user.is_authenticated:
 		user_id = request.user.id
 	else:
 		user_id = None
