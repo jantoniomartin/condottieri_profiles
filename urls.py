@@ -1,8 +1,8 @@
-from django.conf.urls import *
+from django.conf.urls import url
 
 from condottieri_profiles.views import *
 
-urlpatterns = patterns('condottieri_profiles.views',
+urlpatterns = [
 	url(r'^profile/(?P<username>\w+)$',
 		ProfileDetailView.as_view(),
 		name='profile_detail'
@@ -15,5 +15,4 @@ urlpatterns = patterns('condottieri_profiles.views',
 		ToggleFriendshipView.as_view(),
 		name='change_friendship'
 	),
-)
-
+]
