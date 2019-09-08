@@ -1,4 +1,4 @@
-from django.core.management.base import NoArgsCommand, CommandError
+from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 from django.db.models import F
 
@@ -12,7 +12,7 @@ else:
 
 from condottieri_profiles import models
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
 	"""
 This script 'heals' the users that have less than the minimum karma to
 join a game.
