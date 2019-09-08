@@ -103,7 +103,7 @@ class CondottieriProfile(models.Model):
             self.signature_html = self.signature
         super(CondottieriProfile, self).save(*args, **kwargs)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.user.username
 
     def get_absolute_url(self):
@@ -223,7 +223,7 @@ class SpokenLanguage(models.Model):
     code = models.CharField(_("language"), max_length=8, choices=global_settings.LANGUAGES)
     profile = models.ForeignKey(CondottieriProfile)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.get_code_display()
     
     class Meta:
@@ -240,7 +240,7 @@ class Friendship(models.Model):
     class Meta:
         unique_together = (('friend_from', 'friend_to',),)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s is a friend of %s" % (self.friend_to, self.friend_from)
 
 def was_befriended(sender, instance, created, raw, **kwargs):
@@ -280,6 +280,6 @@ class Badge(models.Model, metaclass=TransMeta):
         verbose_name_plural = _("badges")
         translate = ('description',)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s" % self.description
 
