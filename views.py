@@ -48,7 +48,7 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
 class LanguagesInline(InlineFormSet):
     model = SpokenLanguage
     form_class = SpokenLanguageForm
-    extra = 1
+    factory_kwargs = {'extra': 2}
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateWithInlinesView):
     model = CondottieriProfile
