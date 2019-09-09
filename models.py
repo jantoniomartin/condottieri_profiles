@@ -43,7 +43,8 @@ else:
 
 class CondottieriProfileManager(models.Manager):
     def hall_of_fame(self, order='weighted_score'):
-        if not (order in CondottieriProfile._meta.get_all_field_names() \
+        fields = [f.name for f in CondottieriProfile._meta.get_fields()]
+        if not (order in fields \
             or order in ['avg_score', 'avg_victories']):
             order = 'weighted_score'
         order = ''.join(['-', order])
