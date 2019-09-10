@@ -56,7 +56,8 @@ class CondottieriProfile(models.Model):
     """ Defines the actual profile for a Condottieri user.
 
     """
-    user = models.OneToOneField(User, verbose_name=_('user'), related_name='profile')
+    user = models.OneToOneField(User, verbose_name=_('user'), related_name='profile',
+            on_delete=models.CASCADE)
     """ A User object related to the profile """
     name = models.CharField(_('name'), max_length=50, null=True, blank=True)
     """ The user complete name """
@@ -222,7 +223,7 @@ post_save.connect(create_profile, sender=User)
 class SpokenLanguage(models.Model):
     """ Defines a language that a User understands """
     code = models.CharField(_("language"), max_length=8, choices=global_settings.LANGUAGES)
-    profile = models.ForeignKey(CondottieriProfile)
+    profile = models.ForeignKey(CondottieriProfile, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.get_code_display()
@@ -234,8 +235,8 @@ class Friendship(models.Model):
     """
     Defines a one-way friendship relationship between two users.
     """
-    friend_from = models.ForeignKey(User, related_name="friends")
-    friend_to = models.ForeignKey(User, related_name="friend_of")
+    friend_from = models.ForeignKey(User, related_name="friends", on_delete=models.CASCADE)
+    friend_to = models.ForeignKey(User, related_name="friend_of", on_delete=models.CASCADE)
     created_on = models.DateTimeField(editable=False, auto_now_add=True)
 
     class Meta:
