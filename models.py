@@ -26,6 +26,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.conf import global_settings
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.urls import reverse
 
 from transmeta import TransMeta
 
@@ -109,8 +110,7 @@ class CondottieriProfile(models.Model):
         return self.user.username
 
     def get_absolute_url(self):
-        return ('profile_detail', None, {'username': self.user.username})
-    get_absolute_url = models.permalink(get_absolute_url)
+        return reverse('profile_detail', None, {'username': self.user.username})
 
     def has_languages(self):
         """ Returns true if the user has defined at least one known language """
