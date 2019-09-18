@@ -33,7 +33,7 @@ from transmeta import TransMeta
 from avatar.models import Avatar
 from avatar.templatetags import avatar_tags
 
-from condottieri_profiles.defaults import *
+#from condottieri_profiles.defaults import *
 from machiavelli.signals import government_overthrown, player_joined, player_surrendered
 
 
@@ -41,6 +41,15 @@ if "pinax.notifications" in settings.INSTALLED_APPS:
     from pinax.notifications import models as notification
 else:
     notification = None
+
+if 'pybb' in settings.INSTALLED_APPS:
+	import pybb.defaults
+
+	SIGNATURE_MAX_LENGTH = pybb.defaults.PYBB_SIGNATURE_MAX_LENGTH
+	DEFAULT_AUTOSUBSCRIBE = pybb.defaults.PYBB_DEFAULT_AUTOSUBSCRIBE
+else:
+	SIGNATURE_MAX_LENGTH = settings.SIGNATURE_MAX_LENGTH
+	DEFAULT_AUTOSUBSCRIBE = settings.DEFAULT_AUTOSUBSCRIBE
 
 class CondottieriProfileManager(models.Manager):
     def hall_of_fame(self, order='weighted_score'):
@@ -67,7 +76,7 @@ class CondottieriProfile(models.Model):
     location = models.CharField(_('location'), max_length=40, null=True, blank=True)
     """ Geographic location string """
     website = models.URLField(_("website"), null = True, blank = True)
-    karma = models.PositiveIntegerField(default=KARMA_DEFAULT, editable=False)
+    karma = models.PositiveIntegerField(default=settings.KARMA_DEFAULT, editable=False)
     """ Total karma value """
     total_score = models.IntegerField(default=0, editable=False)
     """ Sum of game scores """
@@ -110,7 +119,7 @@ class CondottieriProfile(models.Model):
         return self.user.username
 
     def get_absolute_url(self):
-        return reverse('profile_detail', None, {'username': self.user.username})
+        return reverse('profile_detail', kwargs={'username': self.user.username})
 
     def has_languages(self):
         """ Returns true if the user has defined at least one known language """
@@ -134,10 +143,10 @@ class CondottieriProfile(models.Model):
         if not isinstance(k, int):
             return
         new_karma = self.karma + k
-        if new_karma > KARMA_MAXIMUM:
-            new_karma = KARMA_MAXIMUM
-        elif new_karma < KARMA_MINIMUM:
-            new_karma = KARMA_MINIMUM
+        if new_karma > settings.KARMA_MAXIMUM:
+            new_karma = settings.KARMA_MAXIMUM
+        elif new_karma < settings.KARMA_MINIMUM:
+            new_karma = settings.KARMA_MINIMUM
         self.karma = new_karma
         self.save()
 
@@ -147,21 +156,21 @@ class CondottieriProfile(models.Model):
         self.save()
 
     def check_karma_to_join(self, fast=False, private=False):
-        if self.karma < KARMA_TO_JOIN:
+        if self.karma < settings.KARMA_TO_JOIN:
             return _("You need a minimum karma of %s to play a game.") % \
-                    KARMA_TO_JOIN
-        if fast and self.karma < KARMA_TO_FAST:
+                    settings.KARMA_TO_JOIN
+        if fast and self.karma < settings.KARMA_TO_FAST:
             return _("You need a minimum karma of %s to play a fast game.") % \
-                    KARMA_TO_FAST
-        if private and self.karma < KARMA_TO_PRIVATE:
+                    settings.KARMA_TO_FAST
+        if private and self.karma < settings.KARMA_TO_PRIVATE:
             return \
                 _("You need a minimum karma of %s to create a private game.") \
-                    % KARMA_TO_PRIVATE
-        if self.karma < KARMA_TO_UNLIMITED:
+                    % settings.KARMA_TO_PRIVATE
+        if self.karma < settings.KARMA_TO_UNLIMITED:
             current_games = self.user.player_set.all().count()
-            if current_games >= GAMES_LIMIT:
+            if current_games >= settings.GAMES_LIMIT:
                 return _("You need karma %s to play more than %s games.") % \
-                        (KARMA_TO_UNLIMITED, GAMES_LIMIT)
+                        (settings.KARMA_TO_UNLIMITED, settings.GAMES_LIMIT)
         return ""
 
     ##
@@ -197,11 +206,7 @@ government_overthrown.connect(add_overthrow)
 def add_surrender(sender, **kwargs):
     profile = sender.user.profile
     profile.surrenders += 1
-    try:
-        surrender_karma = SURRENDER_KARMA
-    except:
-        surrender_karma = -10
-    profile.adjust_karma(surrender_karma)
+    profile.adjust_karma(settings.SURRENDER_KARMA)
 
 player_surrendered.connect(add_surrender)
 
